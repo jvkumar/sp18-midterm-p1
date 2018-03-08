@@ -39,7 +39,6 @@ contract Queue {
 	/* Add events */
 	// YOUR CODE HERE
 	event personDeletedDueToTimeLimit(address _address);
-	event purchaseCompleted(address _address);
 	
 	// modifier
 	modifier onlyOwner() {
@@ -150,8 +149,6 @@ contract Queue {
 		existingUsers[deletedPerson._address] = false;
 		if (deletedPerson.timeOver < now) {
 			personDeletedDueToTimeLimit(deletedPerson._address);
-		} else {
-			purchaseCompleted(deletedPerson._address);
 		}
 		delete waitingPeople[firstIndex];
 		firstIndex = (firstIndex + 1) % size;

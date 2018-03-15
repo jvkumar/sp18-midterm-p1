@@ -3,7 +3,7 @@ pragma solidity ^0.4.15;
 /**
  * @title ERC20Interface
  * @dev ERC20 token standard: https://github.com/ethereum/EIPs/issues/20
- * As seen here: https://github.com/ConsenSys/Tokens/blob/master/contracts/Token.sol
+ * As seen here: https://github.com/ConsenSys/Tokens/blob/master/contracts/eip20/EIP20Interface.sol
  */
 contract ERC20Interface {
 	/* This is a slight change to the ERC20 base standard.

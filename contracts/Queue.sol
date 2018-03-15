@@ -34,29 +34,56 @@ contract Queue {
 	}
 
 	/* Returns whether the queue is empty or not */
-	function empty() constant returns(bool) {
+	function empty() 
+		constant 
+		returns(bool) 
+	{
 		return (buyers_list.length == 0);
 	}
 	
 	/* Returns the address of the person in the front of the queue */
-	function getFirst() constant returns(address) {
-		return buyers_list[0];
+	function getFirst() 
+		constant 
+		returns(address) 
+	{
+		for(uint i = 0; i <= buyers_list.length; i++) {
+			if(buyers_queue_map[buyers_list[i]].position == 1) {
+				return buyers_list[i];
+			}
+		}
 	}
 	
 	/* Allows `msg.sender` to check their position in the queue */
-	function checkPlace() constant returns(uint8) {
+	function checkPlace() 
+		constant 
+		returns(uint8) 
+	{
 		if (!empty()) {
 			for(uint i =0; i < qsize(); i++) {
 				if(buyers_list[i] == msg.sender) {
-					return i+1;
+					return buyers_queue_map[buyers_list[i]].position;
 				}
 			}
 		}
 	}
 	
-	function expelFirstAndRearrangeQueue() public returns(bool){
-		first_buyer = buyers_list[0];
-		delete buyers_queue_map[first_buyer];
+	function expelFirstAndRearrangeQueue() 
+		public 
+		returns(bool)
+	{
+		first_in_line_addr = getFirst();
+
+		uint rowToDelete = buyers_queue_map[first_in_line_addr].position;
+		address keyToMove = buyers_list[buyers_list.length-1];
+
+		buyers_list[rowToDelete] = keyToMove;
+
+		buyers_queue_map[keyToMove].index = rowToDelete; 
+    buyers_list.length--;
+
+		delete buyers_queue_map[first_in_line_addr];
+
+		delete userStructs[userAddress];
 
 		// Now rearrange the array buyers_list
 		
@@ -67,9 +94,9 @@ contract Queue {
 	 */
 	function checkTime() public returns(bool){
 		//First buyers
-		first_buyer = buyers_queue_map[buyers_list[0]]
-		if (first_buyer) {
-			return ((now - first_buyer.in_time) >= allowed_wait_time);
+		first_in_line = getFirst();
+		if (first_in_line) {
+			return ((now - buyers_queue_map[first_in_line].in_time) >= allowed_wait_time);
 		}
 
 		return false;

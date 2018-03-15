@@ -8,6 +8,12 @@ pragma solidity ^0.4.15;
  */
 
 contract Queue {
+	struct Person {
+	    uint32 timeOver;
+	    uint8 queueNumber;
+	    address _address;
+	}
+
 	/* State variables */
 	uint8 size = 5;
 	uint private allowed_wait_time;
